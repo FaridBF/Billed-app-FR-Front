@@ -19,33 +19,21 @@ const row = (bill) => {
     `;
 };
 
-function sortByDate(data) {
-  // Utilisez la méthode sort() avec une fonction de comparaison personnalisée
-  return data.sort(function (a, b) {
-    // Convertissez les dates en objets Date pour la comparaison
-    const dateA = a.date;
-    const dateB = b.date;
+const sortByDate = (data) => {
+  const antiChrono = (a, b) => (a.date < b.date ? 1 : -1);
 
-    // Comparez les dates pour le tri décroissant
-    if (dateA > dateB) {
-      return -1;
-    } else if (dateA < dateB) {
-      return 1;
-    } else {
-      return 0;
-    }
-  });
-}
+  // Utilisez la méthode sort() avec une fonction de comparaison personnalisée
+  return data.sort(antiChrono);
+};
 
 const rows = (data) => {
   console.log('data before', data);
-  const dataSorted = sortByDate(data);
-  console.log('data after', data);
-
-  console.log('dataSorted', dataSorted);
-  return data && data.length
-    ? dataSorted.map((bill) => row(bill)).join('')
-    : '';
+  if (data && data.length) {
+    const dataSorted = sortByDate(data);
+    return dataSorted.map((bill) => row(bill)).join('');
+  } else {
+    return '';
+  }
 };
 
 export default ({ data: bills, loading, error }) => {
