@@ -5,6 +5,8 @@ import LoadingPage from './LoadingPage.js';
 import Actions from './Actions.js';
 
 const row = (bill) => {
+  console.log('bill action', bill);
+  console.log('bill.fileUrl action', bill.fileUrl);
   return `
     <tr>
       <td>${bill.type}</td>
@@ -13,7 +15,7 @@ const row = (bill) => {
       <td>${bill.amount} €</td>
       <td>${bill.status}</td>
       <td>
-        ${Actions(bill.fileUrl)}
+        ${bill.fileName != 'null' ? Actions(bill.fileUrl) : ''}
       </td>
     </tr>
     `;
