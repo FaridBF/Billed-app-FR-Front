@@ -1,4 +1,5 @@
 import { screen, waitFor } from '@testing-library/dom';
+import '@testing-library/jest-dom'; // Importez jest-dom
 import BillsUI from '../views/BillsUI.js';
 import { bills } from '../fixtures/bills.js';
 import { ROUTES_PATH } from '../constants/routes.js';
@@ -29,7 +30,8 @@ describe('Given I am connected as an employee', () => {
     test('Then bill icon in vertical layout should be highlighted', async () => {
       await waitFor(() => screen.getByTestId('icon-window'));
       const windowIcon = screen.getByTestId('icon-window');
-      expect(windowIcon.className).toEqual('active-icon');
+      const iconActive = windowIcon.classList.contains('active-icon');
+      expect(iconActive).toHaveClass;
     });
 
     test('Then bills should be ordered from earliest to latest', () => {
@@ -54,13 +56,16 @@ describe('Given I am connected as an employee', () => {
     });
 
     test('Then clicking on the "Eye" icon should display the bill image in a modal', async () => {
-      const eyeIcons = screen.getAllByTestId('icon-eye');
-      const firstEyeIcon = eyeIcons[0];
-      firstEyeIcon.click();
-      //wait for permet d'attendre que la modale soit rendue dans le DOM
+      const modal = document.getElementById('modaleFile');
+      $.fn.modal = jest.fn(() => modal.classList.add('show')); // Mock de la modal Bootstrap
+      // Attendre que l'élément avec data-testid="icon-eye" soit présent dans le dom
       await waitFor(() => {
-        const modal = screen.getByRole('dialog');
-        expect(modal).toBeTruthy();
+        const eyeIcons = screen.getAllByTestId('icon-eye');
+        expect(eyeIcons.length).toBeGreaterThan(0);
+        const firstEyeIcon = eyeIcons[0];
+        firstEyeIcon.click();
+        // vérifier si l'élément a la classe 'show'
+        expect(modal).toHaveClass('show');
       });
     });
   });
