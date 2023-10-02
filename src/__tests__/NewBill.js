@@ -3,7 +3,6 @@
  */
 
 import { screen, fireEvent } from '@testing-library/dom';
-
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import NewBillUI from '../views/NewBillUI.js';
@@ -15,7 +14,8 @@ import mockStore from '../__mocks__/store';
 
 // NEWBILL
 describe('Given I am a user connected as Employee', () => {
-  // Test fonctionnel mais n'augmente pas le coverage global du composant
+  // Test fonctionnel => n'augmente pas le coverage global du composant
+  // à préserver pour la présentation et comme exemple
   describe('When I navigate to NewBill page', () => {
     // test('Then email icon in vertical layout should be highlighted', async () => {
     //   Object.defineProperty(window, 'localStorage', {
@@ -34,8 +34,8 @@ describe('Given I am a user connected as Employee', () => {
     // });
   });
 
-  // Test fonctionnel mais n'augmente pas le coverage global du composant
-  // NEW
+  // Test fonctionnel => n'augmente pas le coverage global du composant
+  // à préserver pour la présentation et comme exemple
   describe('When I submit a new Bill', () => {
     // Vérifie que le bill se sauvegarde
     // test('Then must save the bill', async () => {
@@ -124,20 +124,22 @@ describe('Given I am a user connected as Employee', () => {
       expect(spyCreate).toHaveBeenCalled();
     });
 
-    // Vérifie si un fichier est bien chargé
-    test('Then verify the file bill', async () => {
+    test('Then check the invoice file has been loaded', async () => {
       jest.spyOn(mockStore, 'bills');
 
+      //Simuler la navigation vers une autre page de l'application.
       const onNavigate = (pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
       };
 
+      //Manipulation permettant de contrôler le comportement de localStorage dans le test.
       Object.defineProperty(window, 'localStorage', {
         value: localStorageMock
       });
       Object.defineProperty(window, 'location', {
         value: { hash: ROUTES_PATH['NewBill'] }
       });
+      // Simulation du type d'utilisateur connecté
       window.localStorage.setItem(
         'user',
         JSON.stringify({
@@ -145,6 +147,7 @@ describe('Given I am a user connected as Employee', () => {
         })
       );
 
+      // Génère du code HTML représentant la page "NewBill"et stocke ce HTML dans la variable html
       const html = NewBillUI();
       document.body.innerHTML = html;
 
@@ -180,7 +183,8 @@ describe('Given I am a user connected as Employee', () => {
     });
   });
 
-  // Test fonctionnel mais n'augmente pas le coverage global du composant
+  // Test fonctionnel => n'augmente pas le coverage global du composant
+  // à préserver pour la présentation et comme exemple
   describe('When I upload an unaccepted format of file in a new Bill', () => {
     // test('Then verify the submit button iswill be disabled.', async () => {
     //   Object.defineProperty(window, 'localStorage', {
@@ -214,5 +218,16 @@ describe('Given I am a user connected as Employee', () => {
     //     );
     //   });
     // });
+
+    describe('Given I am connected as an employee', () => {
+      describe('When I am on NewBill Page', () => {
+        test('Then a form element should be present', () => {
+          const html = NewBillUI();
+          document.body.innerHTML = html;
+          const formElement = screen.getByTestId('form-new-bill');
+          expect(formElement).toBeTruthy();
+        });
+      });
+    });
   });
 });
