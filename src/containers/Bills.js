@@ -25,9 +25,6 @@ export default class {
   };
 
   handleClickIconEye = (icon) => {
-    // console.log('icon dans bills', icon);
-    // console.log('icon dans bills', icon);
-
     const billUrl = icon.getAttribute('data-bill-url');
     // console.log('billUrl dans bills', billUrl);
     const imgWidth = Math.floor($('#modaleFile').width() * 0.5);
